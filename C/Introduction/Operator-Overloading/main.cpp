@@ -17,11 +17,11 @@ class Matrix {
                 for(int j=0; j < m.a[i].size(); ++j) {
                     int k = m.a[i][j] + this->a[i][j];
                     aux.push_back(k);
-                }
+                };
                 ans.a.push_back(aux);
-            }
+            };
             return ans;
-        }
+        };
 };
 //End of code
 
