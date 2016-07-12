@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+
 class Solution {
-/*
- * Complete the function below.
- */
+
     static int maxXor(int l, int r) {
         int max = 0;
         int xor = 0;
