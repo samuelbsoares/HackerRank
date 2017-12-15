@@ -6,21 +6,34 @@
 
 using namespace std;
 
-unsigned long divisible(long long n, int t) {
-	return (t + (n - 1) / t * t) * ((n - 1) / t) / 2;
+bool isPrime( long long x ){
+    if( ( x == 2 ) || ( x == 3 ) ) 
+	    return true;
+    if( ( x == 1 ) || ( x % 2 == 0 ) )
+	    return false;
+    for( long long i = 3; i <= sqrt( x ) ; i += 2 ) {
+        if (x%i == 0)
+		return false;
+    }
+    return true;
 }
 
 int main() {
-
-	int T;
-	cin >> T;
-
-	while (T > 0) {
-		unsigned long n;
-		cin >> n;
-		cout << divisible(n, 3) + divisible(n, 5) - divisible(n, 15) << endl;
-        T--;
-	}
-
-	return 0;
+    int x;
+    cin >> x;
+    for( int i = 0; i < x; ++i ) {
+        long long n;
+        cin >> n;
+        long long largestFactor = 1;
+        for( long long k = 1; k <= sqrt( n ) ; ++k) {
+            if( n % k == 0 ) {
+                if( isPrime( k ) )
+                    largestFactor = max( k, largestFactor );
+                if( isPrime( n / k ) )
+                    largestFactor = max( largestFactor, n / k );
+            }
+        }
+        cout << largestFactor << endl;
+    }
+    return 0;
 }
