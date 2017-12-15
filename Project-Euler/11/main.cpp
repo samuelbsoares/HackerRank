@@ -1,62 +1,27 @@
-#include <cmath>
-#include <cstdio>
-#include <vector>
 #include <iostream>
-#include <algorithm>
-
-using namespace std;
-
-long p(vector<int> sub) {
-
-    long max_until = 0;
-
-    if (sub.size() > 4) {
-        for (int i = 0; i <= sub.size() - 4; ++i) {
-            long ans = 1;
-            for (int k = 0; k < 4; ++k) {
-                ans *= sub[i + k];
-                }
-            max_until = max(max_until, ans);
-            }
-    }
-    else {
-        max_until = 0;
-    }
-
-    return max_until;
-}
 
 int main() {
-
-    int matrix[20][20];
-
-    for (int i = 0; i < 20; ++i) {
-        for (int j = 0; j < 20; ++j) {
-            cin >> matrix[i][j];
-        }
+    const int M = 20;
+    int i, j;
+    long long int maxN( 0 );
+    int A[ M ][ M ];
+    for( i = 0; i < M; ++i) {
+        for(j=0;j<20;j++)
+            std::cin >> A[ i ][ j ];
     }
-
-    vector<int> diag1, diag2, diag3, diag4, diag, row, col;
-    long max_prod = 0;
-
-    for (int i = 0; i < 20; ++i) {
-        for (int j = 0; j < 20; ++j) {
-            row.push_back(matrix[i][j]);
-            col.push_back(matrix[j][i]);
-        }
-        diag1.resize(i + 1);
-        diag2.resize(i + 1);
-        diag3.resize(i + 1);
-        diag4.resize(i + 1);
-        for (int j = 0; j <= i; ++j) {
-            diag1[j] = (matrix[i - j][j]);
-            diag2[j] = (matrix[i - j][19 - j]);
-            diag3[j] = (matrix[19 - (i - j)][j]);
-            diag4[j] = (matrix[19 - j][19 - (i - j)]);
-        }
-        max_prod = max(max_prod, max(p(row), max(p(col), max(p(diag1), max(p(diag2), max(p(diag3), p(diag4)))))));
+    for( i = 0; i < 20; ++i) {
+        long long int h = 1, v = 1, d = 1, dd = 1;
+        for( j = 0; j < M; ++j) {
+            if( ( i + 3 ) < M )
+                v = A[ i ][ j ] * A[ i + 1 ][ j ] * A[ i + 2 ][ j ] * A[ i + 3 ][ j ];
+            if( ( j + 3 ) < M )
+                h = A[ i ][ j ] * A[ i ][ j + 1 ] * A[ i ][ j + 2 ] * A[ i ][ j + 3 ];
+            if( ( ( i + 3 ) < M ) && ( ( j + 3 ) < 20 ) )
+                d = A[ i ][ j ] * A[ i + 1 ][ j + 1 ] * A[ i + 2 ][ j + 2 ] * A[ i + 3 ][ j + 3 ];            
+            if( i > 2 && j < 17)
+                dd = A[ i ][ j ] * A[ i - 1 ][ j + 1 ] * A[ i - 2 ][ j + 2 ] * A[ i - 3 ][ j + 3 ];
+            maxN = std::max( maxN, std::max ( std::max( v, h ), std::max( d, dd ) ) );
+        }  
     }
-    cout << max_prod << endl;
-
-    return 0;
+    std::cout << maxN;
 }
