@@ -1,11 +1,11 @@
 from sys import stdin
 from math import factorial
 
-def ways(n, m):
-    return (factorial(n+m)/(factorial(n)*factorial(m)))
+def ways( n, m ):
+    return ( factorial( n + m ) / ( factorial( n ) * factorial( m ) ) )
 
-times = int(stdin.readline())
+times = int( stdin.readline() )
 
-for i in xrange(times):
-    x = stdin.readline().split()
-    print(int(ways(float(x[0]), float(x[1])) % (10**9+7)))
+for i in xrange( times ):
+    x = map( int, stdin.readline().split() )
+    print( int( ways( x[ 0 ], x[ 1 ] ) % ( 10 ** 9 + 7 ) ) )
