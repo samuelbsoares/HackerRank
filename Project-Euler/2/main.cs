@@ -4,27 +4,27 @@ using System.IO;
 
 class Solution {
 
-    static long EvenFibSum(long n){
-        long Fib = 8;
-        long NextFib = 13;
+    static long evenFibSum( long n ){
+        long fib = 8;
+        long nextFib = 13;
         long aux = 0;
         long sum = 10;
-        while (NextFib < n){
-            if (NextFib%2==0){
-                sum = sum + NextFib;
+        while( nextFib < n ) {
+            if( nextFib % 2 == 0 ){
+                sum = sum + nextFib;
             }
-            aux = NextFib;
-            NextFib = Fib + NextFib;
-            Fib = aux;
+            aux = nextFib;
+            nextFib = fib + nextFib;
+            fib = aux;
         }
         return sum;
     }
 
-    static void Main(String[] args) {
-        int n = Convert.ToInt32(Console.ReadLine());
-        for (int x=0; x<n; x++){
-            long f = Convert.ToInt64(Console.ReadLine());
-            Console.WriteLine(EvenFibSum(f));
+    static void Main( String[] args ) {
+        int n = Convert.ToInt32( Console.ReadLine() );
+        for( int x = 0 ; x < n ; x++ ) {
+            long f = Convert.ToInt64( Console.ReadLine() );
+            Console.WriteLine( evenFibSum(f) );
         }
     }
 }
