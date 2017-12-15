@@ -1,31 +1,28 @@
-#include <cmath>
-#include <cstdio>
-#include <vector>
 #include <iostream>
-#include <algorithm>
+
 using namespace std;
 
-long sqr_of_sums(int n) {
+long sqrOfSums( int n ) {
     long s(0);
-    for (int i = n; i > 0; i--) { s += i; }
-    return pow(s, 2);
+    for( int i = n; i > 0; --i )
+        s += i;
+    return s * s;
 }
 
-long sum_of_sqrs(int n) {
+long sumOfSqrs( int n ) {
     long s(0);
-    for (int i = n; i > 0; i--) { s += pow(i, 2); }
+    for( int i = n; i > 0; --i)
+        s += i * i;
     return s;
 }
 
 int main() {
-    int t;
-    cin >> t;
-    
-    for (int i = 0; i < t; ++i) {
+    int T;
+    cin >> T;
+    while( T-- ) {
         int n;
         cin >> n;
-        cout << sqr_of_sums(n) - sum_of_sqrs(n) << "\n";
+        cout << sqrOfSums(n) - sumOfSqrs(n) << "\n";
     }
-    
     return 0;
 }
