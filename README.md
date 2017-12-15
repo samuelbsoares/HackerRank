@@ -1,2 +1,3 @@
 # HackerRank
-Codes developed in C++, C#, and Python for HackerRank.com
+
+Undocumented codes written in C++, C#, and Python for challenges from HackerRank.com.
