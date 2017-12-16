@@ -1,80 +1,91 @@
-#include <cmath>
-#include <cstdio>
 #include <vector>
 #include <iostream>
-#include <algorithm>
-#include <cassert>
+#include <cmath>
+
 using namespace std;
 
-int leap(long long y){
-    if(y % 400 == 0){
-        return true;
-    }else if(y % 100 == 0){
-        return false;
-    }else if(y % 4 == 0){
-        return true;
-    }else {
-        return false;
-    }
-}
-int ms[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-int days(long long y, int m){
-    if(m == 2 && leap(y)) return 29;
-    else return ms[m];
-}
-int getDays(long long y, int m){
-    
-    
-    long long rem = y-1;
-    long long yls = rem/400 + rem/4 - rem/100;
-    long long ans = yls+rem;
-    
-    int p = 1;
-    while(p < m){
-        ans += days(y, p);
-        p++;
-    }
-    return ans%7;
-       
-}
+const int MAXN = 10000000 + 10;
+const int MAXP = 664579 + 10;
 
-int get(long long y, int m, long long offset, long long ys, int ms){
-    long long ans = (offset%7 == 6)?1:0;
-    int tmp = ms;
-    while(ys < y || tmp < m){
-        offset = (offset+days(ys, tmp))%7;
-        if(offset%7 == 6) ans++;
-        tmp++;
-        if(tmp == 13){
-            tmp = 1;
-            ys++;
+vector< bool > isPrime(MAXN, true);
+vector< int > prime(MAXP);
+int primeNum;
+
+void sieve() {
+    primeNum = 1;
+    isPrime[ 0 ] = isPrime[ 1 ] = false;
+    prime[ 0 ] = 2;
+    for (int i = 4; i < MAXN; i += 2 ) {
+        isPrime[ i ] = false;
+    }
+    for( int i = 3; i < MAXN; i += 2 ) {
+        if( isPrime[ i ] ) {
+            prime[ primeNum++ ] = i;
+            int inc = i << 1;
+            for( int j = i + inc; j < MAXN; j += inc )
+                isPrime[ j ] = false;
         }
-    }  
-    //ans += d; 
-    return ans;
+    }
 }
+
+bool checkPrime(long long x) {
+    if( x < MAXN )
+        return isPrime[ x ];
+    
+    int last = sqrt( x );
+    for( int i = 0; i < primeNum && prime[ i ] <= last; ++i) {
+        if( x % prime[ i ] == 0 )
+            return false;
+    }
+    return true;
+}
+
+
 int main() {
+    
+    long long T, N;
+    sieve();
 
-    int t;
-    cin >> t;
-
-    while(t--){
-        long long y1, y2;
-        int d1, d2, m1, m2;
-        scanf("%lld %d %d %lld %d %d", &y1, &m1, &d1, &y2, &m2, &d2);
-        
-        if(d1 != 1){
-            m1++;
-            d1 = 1;
-            if(m1 == 13){
-                y1++;
-                m1 = 1;
+    long long sum[ MAXP ];
+    sum[ 0 ] = 0;
+    
+    for( int i = 0; i < primeNum; ++i )
+        sum[ i + 1 ] = sum[ i ] + prime[ i ];
+    cin >> T;
+    while( T-- ) {
+        cin >> N;
+        int left = 0, right = primeNum;
+        int first = primeNum - 1;
+        while(left <= right) {
+            int mid = ( left + right ) >> 1;
+            if( sum[ mid ] == N ) {
+                first = mid;
+                break;
+            }
+            else if( sum[ mid ] < N )
+                left = mid + 1;
+            else {
+                first = min( first, mid );
+                right = mid - 1;
             }
         }
-        long long before = (getDays(y1, m1)-getDays(1900, 1)+7)%7;
-        long long b = get(y2, m2, before, y1, m1);
-        printf("%lld\n", b);
+        int longest = -1;
+        long long ans;
+        for( int i = 0; i < 30; ++i ) {
+            for( int j = first + 10; j >= i; --j ) {
+                long long val = sum[ j ] - sum[ i ];
+                if( val <= N && checkPrime( val ) ) {
+                    if(j - i > longest ) {
+                        longest = j - i;
+                        ans = val;
+                    }
+                    else if( j - i == longest )
+                        ans = min(ans, val);
+                    break;
+                }
+            }
+        }
+        cout << ans << ' ' << longest << endl;
     }
-    
     return 0;
 }
